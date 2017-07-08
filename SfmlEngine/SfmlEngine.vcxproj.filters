@@ -2,33 +2,127 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SFML\Math\Vectors.cpp">
-      <Filter>SFML\Math</Filter>
-    </ClCompile>
     <ClCompile Include="Engine\Game.cpp">
       <Filter>Engine</Filter>
     </ClCompile>
+    <ClCompile Include="Engine\Graphics\AnimatedSprite.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\SpriteAnimation.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Graphics\TiledSpriteAnimation.cpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\InputManager.cpp">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Input\InputManagerKeyboard.cpp">
+      <Filter>Engine\Input</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\States\GameState.cpp">
+      <Filter>Engine\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\States\GameStateManager.cpp">
+      <Filter>Engine\States</Filter>
+    </ClCompile>
+    <ClCompile Include="Engine\Log\LogManager.cpp">
+      <Filter>Engine\Log</Filter>
+    </ClCompile>
+    <ClCompile Include="States\IngameMenuState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\IngameState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
+    <ClCompile Include="States\MainMenuState.cpp">
+      <Filter>States</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <Filter Include="SFML">
-      <UniqueIdentifier>{9c0c0731-cc32-4628-8b78-a42f3c330231}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="SFML\Math">
-      <UniqueIdentifier>{2335db21-06e1-4d42-beef-c086548beda4}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Engine">
-      <UniqueIdentifier>{6f45a0c0-d5e6-4521-8f5c-37dd0a62499c}</UniqueIdentifier>
+      <UniqueIdentifier>{ba6e17fc-9732-4e29-8cd1-ee6b43ee1eae}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Input">
+      <UniqueIdentifier>{5d6ff7ce-721f-4352-a74a-0cdf86608bed}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Log">
+      <UniqueIdentifier>{2c282c0e-e71a-4a1f-b24a-79c1e8ff83c3}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\States">
+      <UniqueIdentifier>{e38872b6-e147-4479-8dd6-c8c5507e25bb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Engine\Graphics">
+      <UniqueIdentifier>{507290db-564d-4f61-b2a1-bcb239115818}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="States">
+      <UniqueIdentifier>{f3056008-c8a8-445c-a76f-7ea13a60e9a0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Sfml">
+      <UniqueIdentifier>{a3ba230e-f84f-4fc2-bedf-e667ab20b3e6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Content">
+      <UniqueIdentifier>{05ae3602-b5d6-47c0-8dd5-8aed4e626f1f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="SFML\Math\Vectors.hpp">
-      <Filter>SFML\Math</Filter>
-    </ClInclude>
-    <ClInclude Include="SFML\Colors.hpp">
-      <Filter>SFML</Filter>
-    </ClInclude>
     <ClInclude Include="Engine\Game.hpp">
       <Filter>Engine</Filter>
     </ClInclude>
+    <ClInclude Include="Engine\GameTime.hpp">
+      <Filter>Engine</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\AnimatedSprite.hpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\SpriteAnimation.hpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\SpriteAnimationFrame.hpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Graphics\TiledSpriteAnimation.hpp">
+      <Filter>Engine\Graphics</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\InputManager.hpp">
+      <Filter>Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Input\InputManagerKeyboard.hpp">
+      <Filter>Engine\Input</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\States\GameState.hpp">
+      <Filter>Engine\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\States\GameStateManager.hpp">
+      <Filter>Engine\States</Filter>
+    </ClInclude>
+    <ClInclude Include="Engine\Log\LogManager.hpp">
+      <Filter>Engine\Log</Filter>
+    </ClInclude>
+    <ClInclude Include="States\IngameMenuState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="States\IngameState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="States\MainMenuState.h">
+      <Filter>States</Filter>
+    </ClInclude>
+    <ClInclude Include="Sfml\Colors.hpp">
+      <Filter>Sfml</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Content\arial.ttf">
+      <Filter>Content</Filter>
+    </Font>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\char_rope.png">
+      <Filter>Content</Filter>
+    </Image>
+    <Image Include="Content\mainMenuBg.png">
+      <Filter>Content</Filter>
+    </Image>
   </ItemGroup>
 </Project>

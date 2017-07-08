@@ -1,40 +1,27 @@
 #include "Game.hpp"
 
-void Game::startGameLoop()
-{
-	// do first update/draw before the loop is starting
-	handleWindowEvents();
-
-	m_time.total = m_clock.getElapsedTime().asSeconds();
-	m_time.elapsed = 0.0f;
-	update(m_time);
-	draw();
-
-	while (m_window.isOpen())
-	{
-		handleWindowEvents();
-		handleUpdateDraw();
-	}
-}
+// game loop functions
 
 void Game::handleWindowEvents()
 {
 	while (m_window.pollEvent(m_event))
 	{
-		if (m_handleWindowClose &&
-			m_event.type == sf::Event::EventType::Closed)
-			//|| (m_event.type == sf::Event::KeyReleased && m_event.key.code == sf::Keyboard::Key::Escape)))
+		if (m_handleWindowClose && m_event.type == sf::Event::EventType::Closed)
 		{
-			if (onStop())
-			{
-				m_window.close();
-			}
+			stop();
+		}
+		else
+		{
+			handleEvent(m_event);
 		}
 	}
 }
 
 void Game::handleUpdateDraw()
 {
+	if (m_stopRequested) // never call onUpdate or onDraw after stop has been called
+		return;
+
 	float elapsedFrameTime = m_clock.restart().asSeconds();
 	m_clock.restart();
 
@@ -45,39 +32,81 @@ void Game::handleUpdateDraw()
 		m_timeSinceLastUpdate += elapsedFrameTime;
 		while (m_timeSinceLastUpdate >= m_timePerFrame)
 		{
-			m_time.elapsed = m_timePerFrame;
+			m_time.delta = m_timePerFrame;
 			m_time.total += m_timePerFrame;
 
-			update(m_time);
+			handleUpdate(m_time);
 			executeDraw = true;
 
 			m_timeSinceLastUpdate -= m_timePerFrame;
 		}
 
 		if (executeDraw)
-			draw();
+			handleDraw(m_window);
 	}
 	else
 	{
-		m_time.elapsed = elapsedFrameTime;
-		m_time.total += m_time.elapsed;
+		m_time.delta = elapsedFrameTime;
+		m_time.total += m_time.delta;
 
-		update(m_time);
-		draw();
+		handleUpdate(m_time);
+		handleDraw(m_window);
 	}
 }
 
-void Game::update(GameTime const & time)
+void Game::handleEvent(sf::Event const & event)
 {
-	onUpdate(m_time);
+	if (m_stopRequested) // never call onEvent after stop has been called
+		return;
+
+	onEvent(event);
+	m_statesManager->onEvent(event);
 }
 
-void Game::draw()
+void Game::handleUpdate(GameTime const & time)
 {
+	if (m_stopRequested) // never call onUpdate after stop has been called
+		return;
+
+	onUpdate(time);
+
+	m_statesManager->onUpdate(time);
+	m_inputManager->onUpdate(time);
+}
+
+void Game::handleDraw(sf::RenderWindow & window)
+{
+	if (m_stopRequested) // never call onDraw after stop has been called
+		return;
+
 	m_window.clear(m_backgroundColor);
-	onDraw();
+
+	onDraw(window);
+	m_statesManager->onDraw(window);
+
 	m_window.display();
 }
+
+void Game::startGameLoop()
+{
+	// do first update/draw before the loop is starting
+	handleWindowEvents();
+
+	m_time.total = m_clock.getElapsedTime().asSeconds();
+	m_time.delta = 0.0f;
+
+	handleUpdate(m_time);
+	handleDraw(m_window);
+
+	// run loop until the window is closed
+	while (m_window.isOpen())
+	{
+		handleWindowEvents();
+		handleUpdateDraw();
+	}
+}
+
+// constructor
 
 Game::Game()
 	: Game("SFML Window", 800, 600)
@@ -91,13 +120,28 @@ Game::Game(std::string windowTitle, unsigned int windowWidth, unsigned int windo
 	m_timePerFrame(1.0f / 60),
 	m_timeSinceLastUpdate(0.0f),
 	m_handleWindowClose(false),
-	m_backgroundColor(0, 0, 0, 255)
+	m_backgroundColor(0, 0, 0, 255),
+	m_statesManager(new GameStateManager()),
+	m_logManager(new LogManager()),
+	m_inputManager(new InputManager())
 {
 	m_window.create(sf::VideoMode(windowWidth, windowHeight), windowTitle,
 		sf::Style::Close | sf::Style::Titlebar);
+
+	m_statesManager->m_game = this;
 }
 
+// deconstructor
+
 Game::~Game()
+{
+	m_statesManager;
+}
+
+// events
+// possible to override
+
+void Game::onEvent(sf::Event const & event)
 {
 }
 
@@ -105,7 +149,7 @@ void Game::onUpdate(GameTime const time)
 {
 }
 
-void Game::onDraw()
+void Game::onDraw(sf::RenderWindow & window)
 {
 }
 
@@ -114,39 +158,49 @@ bool Game::onStop()
 	return true;
 }
 
-int Game::Start()
+// public functions
+
+void Game::start()
 {
 	startGameLoop();
-
-	return 0;
 }
 
-void Game::Stop()
+void Game::stop()
 {
-	m_window.close();
+	if (m_stopRequested)
+		return;
+
+	if (onStop())
+	{
+		m_stopRequested = true;
+
+		m_statesManager->onStop();
+
+		m_window.close();
+	}
 }
 
-sf::Window & Game::getWindow()
+sf::RenderWindow & Game::getWindow()
 {
 	return m_window;
 }
 
-void Game::setFixedTimeStep(bool fixedTimeStep)
+void Game::enableFixedTimeStep(bool enabled)
 {
-	m_fixedTimeStep = fixedTimeStep;
+	m_fixedTimeStep = enabled;
 }
 
-bool Game::isFixedTimeStep()
+bool Game::isFixedTimeStepEnabled() const
 {
 	return m_fixedTimeStep;
 }
 
-void Game::setHandleWindowClose(bool handleWindowClose)
+void Game::enableAutoHandleClose(bool enabled)
 {
-	m_handleWindowClose = handleWindowClose;
+	m_handleWindowClose = enabled;
 }
 
-bool Game::isWindowCloseHandled()
+bool Game::isAutoHandleCloseEnabled() const
 {
 	return m_handleWindowClose;
 }
@@ -156,7 +210,7 @@ void Game::setBackgroundColor(sf::Color color)
 	m_backgroundColor = color;
 }
 
-sf::Color Game::getBackgroundColor()
+sf::Color Game::getBackgroundColor() const
 {
 	return m_backgroundColor;
 }
@@ -167,7 +221,27 @@ void Game::setFrameRate(unsigned int framesPerSecond)
 	m_timePerFrame = 1.0f / framesPerSecond;
 }
 
-unsigned int Game::getFrameRate()
+unsigned int Game::getFrameRate() const
 {
 	return m_frameRate;
+}
+
+GameStateManager & Game::getStateManager() const
+{
+	return *m_statesManager;
+}
+
+LogManager & Game::getLogManager() const
+{
+	return *m_logManager;
+}
+
+InputManager & Game::getInputManager() const
+{
+	return *m_inputManager;
+}
+
+bool Game::isStopRequested() const
+{
+	return m_stopRequested;
 }

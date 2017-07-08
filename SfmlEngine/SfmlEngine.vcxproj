@@ -132,13 +132,42 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Engine\Game.cpp" />
+    <ClCompile Include="Engine\Graphics\AnimatedSprite.cpp" />
+    <ClCompile Include="Engine\Graphics\SpriteAnimation.cpp" />
+    <ClCompile Include="Engine\Graphics\TiledSpriteAnimation.cpp" />
+    <ClCompile Include="Engine\Input\InputManager.cpp" />
+    <ClCompile Include="Engine\Input\InputManagerKeyboard.cpp" />
+    <ClCompile Include="Engine\Log\LogManager.cpp" />
+    <ClCompile Include="Engine\States\GameState.cpp" />
+    <ClCompile Include="Engine\States\GameStateManager.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="SFML\Math\Vectors.cpp" />
+    <ClCompile Include="States\IngameMenuState.cpp" />
+    <ClCompile Include="States\IngameState.cpp" />
+    <ClCompile Include="States\MainMenuState.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Engine\Game.hpp" />
-    <ClInclude Include="SFML\Colors.hpp" />
-    <ClInclude Include="SFML\Math\Vectors.hpp" />
+    <ClInclude Include="Engine\GameTime.hpp" />
+    <ClInclude Include="Engine\Graphics\AnimatedSprite.hpp" />
+    <ClInclude Include="Engine\Graphics\SpriteAnimation.hpp" />
+    <ClInclude Include="Engine\Graphics\SpriteAnimationFrame.hpp" />
+    <ClInclude Include="Engine\Graphics\TiledSpriteAnimation.hpp" />
+    <ClInclude Include="Engine\Input\InputManager.hpp" />
+    <ClInclude Include="Engine\Input\InputManagerKeyboard.hpp" />
+    <ClInclude Include="Engine\Log\LogManager.hpp" />
+    <ClInclude Include="Engine\States\GameState.hpp" />
+    <ClInclude Include="Engine\States\GameStateManager.hpp" />
+    <ClInclude Include="Sfml\Colors.hpp" />
+    <ClInclude Include="States\IngameMenuState.h" />
+    <ClInclude Include="States\IngameState.h" />
+    <ClInclude Include="States\MainMenuState.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Content\arial.ttf" />
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="Content\char_rope.png" />
+    <Image Include="Content\mainMenuBg.png" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
